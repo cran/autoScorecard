@@ -4,7 +4,7 @@
 \alias{get_IV}
 \title{Function to Calculate IV Value}
 \usage{
-get_IV(df, feat, label)
+get_IV(df, feat, label, E = 0, woeInf.rep = 1e-04)
 }
 \arguments{
 \item{df}{A data.frame with independent variables and target variable.}
@@ -12,9 +12,13 @@ get_IV(df, feat, label)
 \item{feat}{A name of dependent variable.}
 
 \item{label}{A name of target variable.}
+
+\item{E}{Constant, should be set to [0,1], used to prevent calculation overflow due to no data in binning.}
+
+\item{woeInf.rep}{Woe replaces the constant, and when woe is positive or negative infinity, it is replaced by a constant.}
 }
 \value{
-A data frame including counts, proportions, odds, woe, and IV values for each stratum
+A data frame including counts, proportions, odds, woe, and IV values for each stratum.
 }
 \description{
 Function to Calculate IV Value

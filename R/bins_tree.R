@@ -88,7 +88,7 @@ bins_tree<-function(  df , key_var , y_var, max_depth = 3 , p = 0.1  ){
       bin     <- rep(NA,length( length( depreciation )+1 ))
       class   <- rep(NA,length( length( depreciation )+1 ))
       variable <- rep(col,length( length( depreciation )+1 ))
-
+      method <- rep('bins_tree',length( length( depreciation )+1 ))
 
       cnt=0
       for ( jj in 1:( length( depreciation )+1) ) {
@@ -126,7 +126,7 @@ bins_tree<-function(  df , key_var , y_var, max_depth = 3 , p = 0.1  ){
       }
 
 
-      head<- data.frame( variable,bin,class,lower ,upper )
+      head<- data.frame( variable,bin,class,method,lower ,upper )
       df_bin2[,col] <- df_bin2$equal_width_2
 
       iv_1 = get_IV(df=df_bin2 ,feat= col , label=y_var  )

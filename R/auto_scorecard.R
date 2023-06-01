@@ -14,6 +14,8 @@
 #' @param na.omit   na.omit returns the object with incomplete cases removed.
 #' @param max_depth   Set the maximum depth of any node of the final tree, with the root node counted as depth 0. Values greater than 30 rpart will give nonsense results on 32-bit machines.
 #' @param tree_p   Meet the following conversion formula: minbucket = round(  p*nrow( df )).Smallest bucket(rpart):Minimum number of observations in any terminal <leaf> node.
+#' @param k Each scale doubles the probability of default several times.
+#' @param base0 Whether the scorecard base score is 0.
 #'
 #' @return A list containing data, bins, scorecards and models.
 #' @export
@@ -25,7 +27,7 @@
 #' tree_p = 0.1, missing_rate = 0, single_var_rate = 1, iv_set = 0.02,
 #' char_to_number = TRUE , na.omit = TRUE)
 auto_scorecard<-function( feature = accepts, key_var = "application_id", y_var = "bad_ind"
-                          ,sample_rate = 0.7 , points0 = 600, odds0 = 1/20, pdo = 50, max_depth = 3, tree_p = 0.1
+                          ,sample_rate = 0.7 , base0=FALSE , points0 = 600, odds0 = 1/20, pdo = 50, k=2, max_depth = 3, tree_p = 0.1
                           ,missing_rate = 0 ,  single_var_rate = 1, iv_set = 0.02, char_to_number = TRUE , na.omit = TRUE){
 
 
@@ -78,8 +80,17 @@ auto_scorecard<-function( feature = accepts, key_var = "application_id", y_var =
   corrplot::corrplot(cor1)
   corrplot::corrplot(cor1,method = "number")
 
+   if(base0){
+     Score<-noauto_scorecard2( bins_card= woe_test, fit= lg_both,bins_woe=treebins_train  ,points0 = points0, odds0 = odds0, pdo = pdo ,k = k)
+     Score_2<-noauto_scorecard2( bins_card= woe_train, fit= lg_both,bins_woe=treebins_train  ,points0 = points0, odds0 = odds0, pdo = pdo ,k = k)
 
-  Score<-noauto_scorecard( bins_card= woe_test, fit= lg_both,bins_woe=treebins_train  ,points0 = points0, odds0 = odds0, pdo = pdo )
+
+   }else{
+
+     Score<-noauto_scorecard( bins_card= woe_test, fit= lg_both,bins_woe=treebins_train  ,points0 = points0, odds0 = odds0, pdo = pdo ,k = k)
+     Score_2<-noauto_scorecard( bins_card= woe_train, fit= lg_both,bins_woe=treebins_train  ,points0 = points0, odds0 = odds0, pdo = pdo ,k = k)
+
+   }
 
   Score['train']   <-  list( as.data.frame(train )  )
   Score['test']    <-  list( as.data.frame(test )  )
@@ -89,6 +100,11 @@ auto_scorecard<-function( feature = accepts, key_var = "application_id", y_var =
   Score['lg']     <-   list( lg )
   Score['lg_both']<-   list( lg_both  )
 
+  psi_1<-psi_cal( df_train =Score_2$data_score , df_test = Score$data_score,feat='Score',label='bad_ind' , nbins=10)
+  Score['PSI']<-   list( psi_1  )
+
+
+  plot_board( label= woe_test$bad_ind, pred = woe_test$lg_both_p   )
 
   return( Score  )
 }

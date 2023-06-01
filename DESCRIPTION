@@ -1,7 +1,7 @@
 Package: autoScorecard
 Type: Package
 Title: Fully Automatic Generation of Scorecards
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(person(given="Tai-Sen", family = "Zheng", role = c("aut", "cre"),
                     email = "jc3802201@gmail.com") )
 Maintainer: Tai-Sen Zheng <jc3802201@gmail.com>
@@ -23,7 +23,7 @@ Imports: infotheo, ROCR, rpart, discretization, stats, graphics,
 RoxygenNote: 7.2.3
 Depends: R (>= 2.10)
 NeedsCompilation: no
-Packaged: 2023-05-22 15:17:01 UTC; admin
+Packaged: 2023-06-01 19:57:44 UTC; admin
 Author: Tai-Sen Zheng [aut, cre]
 Repository: CRAN
-Date/Publication: 2023-05-22 18:30:05 UTC
+Date/Publication: 2023-06-01 20:40:03 UTC

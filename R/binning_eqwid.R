@@ -11,7 +11,7 @@
 #' @examples
 #' accepts <- read.csv( system.file( "extdata", "accepts.csv" , package = "autoScorecard" ))
 #' feature <- stats::na.omit( accepts[,c(1,3,7:23)] )
-#' binning_eqwid1 <- binning_eqwid( df = feature, feat = 'tot_derog', label = 'bad_ind', nbins = 5 )
+#' binning_eqwid1 <- binning_eqwid( df = feature, feat = 'tot_derog', label = 'bad_ind', nbins = 3 )
 binning_eqwid<- function( df, feat,label , nbins=3){
 
   equal_width <- infotheo::discretize(df[,c(feat)],"equalwidth",nbins)
@@ -23,7 +23,7 @@ binning_eqwid<- function( df, feat,label , nbins=3){
   class<- rep(NA, length(  nbins ) )
   lower   <- rep(NA,length( nbins ))
   upper <- rep(NA,length( nbins ))
-
+  method <- rep( 'equal_width' , length( nbins ) )
   df$equal_width <- equal_width$X
   df$equal_width_2<-''
 
@@ -65,7 +65,7 @@ binning_eqwid<- function( df, feat,label , nbins=3){
 
   df2<- df
 
-  head<- data.frame( variable,class ,lower,upper )
+  head<- data.frame(method, variable,class ,lower,upper )
   df2[,c(feat)] <- df$equal_width_2
 
   iv_1 = get_IV(df=df2 ,feat= feat , label=label  )

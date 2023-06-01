@@ -20,7 +20,10 @@ binning_kmean<- function( df, feat ,label , nbins = 3 ){
 
   variable<- rep(feat, length(  nbins ) )
   class<- rep(NA, length(  nbins ) )
+  lower   <- rep(NA,length( nbins ))
+  upper <- rep(NA,length( nbins ))
 
+  method <- rep( 'k_means' , length( nbins ) )
   df$equal_width <- k_means$cluster
   df$equal_width_2<-''
 
@@ -44,17 +47,22 @@ binning_kmean<- function( df, feat ,label , nbins = 3 ){
 
       df$equal_width_2[which(df$equal_width== cnt)]<- paste("(",'-inf' ,',', depreciation[1] ,"]", sep = "")
       class[1]<- paste("(",'-inf' ,',', depreciation[1] ,"]", sep = "")
-
+      lower[1]<- -Inf
+      upper[1]<- depreciation[1]
 
     }else if(cnt == nbins ){
 
       df$equal_width_2[which(df$equal_width== cnt)]<-  paste("(",depreciation[cnt-1] ,',','inf',"]", sep = "")
       class[nbins]<- paste("(",depreciation[cnt-1] ,',','inf',"]", sep = "")
+      lower[nbins]<- depreciation[cnt-1]
+      upper[nbins]<- Inf
 
     }else{
 
       df$equal_width_2[which(df$equal_width== cnt)]<-  paste("(",depreciation[cnt-1] ,',', depreciation[cnt] ,"]", sep = "")
       class[cnt]<- paste("(",depreciation[cnt-1] ,',', depreciation[cnt] ,"]", sep = "")
+      lower[cnt]<- depreciation[cnt-1]
+      upper[cnt]<- depreciation[cnt]
     }
 
 
@@ -62,7 +70,7 @@ binning_kmean<- function( df, feat ,label , nbins = 3 ){
 
   df2<- df
 
-  head<- data.frame( variable,class  )
+  head<- data.frame( method, variable,class ,lower,upper  )
   df2[,c(feat)] <- df$equal_width_2
 
   iv_1 = get_IV(df=df2 ,feat= feat , label=label  )

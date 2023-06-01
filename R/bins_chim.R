@@ -15,7 +15,6 @@
 bins_chim<-function(  df, key_var, y_var, alpha  ){
 
 
-
  # library(discretization)
 
   df_bin <- df[, c(key_var, y_var)]
@@ -82,7 +81,7 @@ bins_chim<-function(  df, key_var, y_var, alpha  ){
       bin     <- rep(NA,length( length( depreciation )+1 ))
       class   <- rep(NA,length( length( depreciation )+1 ))
       variable <- rep(col,length( length( depreciation )+1 ))
-
+      method <- rep('bins_chim',length( length( depreciation )+1 ))
 
       cnt=0
       for ( jj in 1:( length( depreciation )+1) ) {
@@ -122,7 +121,7 @@ bins_chim<-function(  df, key_var, y_var, alpha  ){
 
 
 
-      head<- data.frame( variable,bin,class,lower ,upper )
+      head<- data.frame( variable,class,bin,method,lower ,upper )
       df_bin2[,col] <- df_bin2$equal_width_2
 
 

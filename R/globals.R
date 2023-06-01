@@ -1,1 +1,1 @@
-utils::globalVariables(c("accepts", "feature",'variable'))
+utils::globalVariables(c("accepts", "feature",'variable','auto_scorecard1'))

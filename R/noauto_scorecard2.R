@@ -1,11 +1,11 @@
 #' Manually Input Parameters to Generate Scorecards
-#'
+#' The basic score is dispersed into each feature score
 #' @param bins_card Binning template.
 #' @param fit See glm {stats}.
-#' @param points0 Base point.
-#' @param odds0 odds.
-#' @param pdo Point-to Double Odds.
-#' @param bins_woe  A data frame of woe with independent variables and target variable.
+#' @param bins_woe Base point.
+#' @param points0 odds.
+#' @param odds0 Point-to Double Odds.
+#' @param pdo A data frame of woe with independent variables and target variable.
 #' @param k Each scale doubles the probability of default several times.
 #'
 #' @return A data frame with score ratings.
@@ -26,9 +26,9 @@
 #'     col_woe = 'woe', lower = 'lower' ,upper = 'upper'  )
 #' lg <- stats::glm( bad_ind~. , family = stats::binomial( link = 'logit' ) , data = woe_train )
 #' lg_both <- stats::step( lg , direction = "both")
-#' Score1 <- noauto_scorecard( bins_card= woe_test , fit =lg_both , bins_woe = treebins_train ,
+#' Score2 <- noauto_scorecard2( bins_card= woe_test , fit =lg_both , bins_woe = treebins_train ,
 #' points0 = 600 , odds0 = 1/20 , pdo = 50 )
-noauto_scorecard<- function( bins_card , fit , bins_woe , points0 = 600, odds0 = 1/19, pdo = 50,k=2 ){
+noauto_scorecard2<- function( bins_card, fit,bins_woe,points0 = 600, odds0 = 1/19, pdo = 50,k=3 ){
   re2<-bins_card
   coe = (fit$coefficients)
 
@@ -46,7 +46,7 @@ noauto_scorecard<- function( bins_card , fit , bins_woe , points0 = 600, odds0 =
       }else{
 
         score= score +  p*as.numeric(coe[i])*re2[,names(coe[i]  )]
-
+        print( names(coe[i]  ) )
 
       }
 
@@ -57,18 +57,24 @@ noauto_scorecard<- function( bins_card , fit , bins_woe , points0 = 600, odds0 =
   }
 
 
-  re2$Score<-  round( get_score( coe=coe  ,q=q,p=p,re2=re2),0  )
+  ####
+  base_score =0
+  base_score_cut = ( q + p*as.numeric(coe[1]) ) / (length(coe)-1)
+
+
+  re2$Score<-  round( get_score( coe=coe  ,q=q,p=p,re2=re2),0  )  + round( base_score_cut ,0 )
 
 
 
 
-  base_score =  q + p*as.numeric(coe[1])
 
+  ####
+  bin_score2<- function( bins_woe,q,p,coe ,E ){
 
-  bin_score<- function( bins_woe,q,p,coe  ){
 
     aaa <- bins_woe
     aaa[,"var_socre"]<- 0.0
+
 
     for (  s in 1:nrow( aaa )) {
 
@@ -85,7 +91,7 @@ noauto_scorecard<- function( bins_card , fit , bins_woe , points0 = 600, odds0 =
       if(  i==length(coe) &  c1==0  ){
 
       }else{
-        aaa[s,"var_socre"] <- round(   p*c1* as.numeric( aaa[s,'woe'] ),0 )
+        aaa[s,"var_socre"] <- round(   p*c1* as.numeric( aaa[s,'woe'] ),0 )  + E
 
       }
 
@@ -99,7 +105,7 @@ noauto_scorecard<- function( bins_card , fit , bins_woe , points0 = 600, odds0 =
   }
 
 
-  bin_score<- bin_score(bins_woe=bins_woe  ,q=q,p=p,coe=coe  )
+  bin_score<- bin_score2(bins_woe=bins_woe  ,q=q,p=p,coe=coe ,E=round( base_score_cut ,0 ) )
 
 
   data_score<-re2
@@ -111,4 +117,3 @@ noauto_scorecard<- function( bins_card , fit , bins_woe , points0 = 600, odds0 =
   return(  result )
 
 }
-

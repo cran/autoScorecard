@@ -9,9 +9,11 @@ auto_scorecard(
   key_var = "application_id",
   y_var = "bad_ind",
   sample_rate = 0.7,
+  base0 = FALSE,
   points0 = 600,
   odds0 = 1/20,
   pdo = 50,
+  k = 2,
   max_depth = 3,
   tree_p = 0.1,
   missing_rate = 0,
@@ -30,11 +32,15 @@ auto_scorecard(
 
 \item{sample_rate}{Training set sampling percentage.}
 
+\item{base0}{Whether the scorecard base score is 0.}
+
 \item{points0}{Base point.}
 
 \item{odds0}{odds.}
 
 \item{pdo}{Point-to Double Odds.}
+
+\item{k}{Each scale doubles the probability of default several times.}
 
 \item{max_depth}{Set the maximum depth of any node of the final tree, with the root node counted as depth 0. Values greater than 30 rpart will give nonsense results on 32-bit machines.}
 

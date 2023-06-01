@@ -18,15 +18,33 @@ binning_eqfreq<- function( df, feat , label , nbins =3 ){
   depreciation<- rep(NA, length(  nbins ) )
 
 
-  if( length(  unique(equal_freq$X) ) != nbins   ){
-    so<- data.frame()
+  if(  length(  unique(equal_freq$X) ) != nbins  ){
+
+    variable<- rep(feat,   nbins  )
+
+    class<- rep(NA,  nbins  )
+    method <- rep( 'equal_freq' ,  nbins  )
+
+    lower   <- rep(NA, nbins )
+    upper <- rep(NA, nbins )
+
+    outcome_0 <- rep(NA,nbins )
+    outcome_1 <- rep(NA, nbins )
+    pct_0 <- rep(NA, nbins )
+    pct_1 <- rep(NA, nbins )
+    odds<- rep(NA,nbins )
+    woe<- rep(NA, nbins )
+    miv<- rep(NA, nbins )
+
+    so<- data.frame(variable,class ,method ,lower ,upper,outcome_0,outcome_1 ,pct_0 ,pct_1,odds,woe,miv )
     return( so )
   }
 
 
+
   variable<- rep(feat, length(  nbins ) )
   class<- rep(NA, length(  nbins ) )
-
+  method <- rep( 'equal_freq' , length( nbins ) )
   lower   <- rep(NA,length( nbins ))
   upper <- rep(NA,length( nbins ))
 
@@ -53,7 +71,7 @@ binning_eqfreq<- function( df, feat , label , nbins =3 ){
     if( cnt ==1){
 
       df$equal_width_2[which(df$equal_width== cnt)]<- paste("(",'-Inf' ,',', depreciation[1] ,"]", sep = "")
-      class[1]<- paste("(",'-inf' ,',', depreciation[1] ,"]", sep = "")
+      class[1]<- paste("(",'-Inf' ,',', depreciation[1] ,"]", sep = "")
 
       lower[1]<- -Inf
       upper[1]<- depreciation[1]
@@ -79,7 +97,7 @@ binning_eqfreq<- function( df, feat , label , nbins =3 ){
   }
 
   df2<- df
-  head<- data.frame( variable,class,lower, upper )
+  head<- data.frame(method, variable,class,lower, upper )
   df2[,c(feat)] <- df$equal_width_2
 
   iv_1 = get_IV(df=df2 ,feat= feat , label=label  )

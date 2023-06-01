@@ -24,5 +24,5 @@ Equal Width Binning
 \examples{
 accepts <- read.csv( system.file( "extdata", "accepts.csv" , package = "autoScorecard" ))
 feature <- stats::na.omit( accepts[,c(1,3,7:23)] )
-binning_eqwid1 <- binning_eqwid( df = feature, feat = 'tot_derog', label = 'bad_ind', nbins = 5 )
+binning_eqwid1 <- binning_eqwid( df = feature, feat = 'tot_derog', label = 'bad_ind', nbins = 3 )
 }
