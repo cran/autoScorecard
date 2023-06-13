@@ -1,7 +1,7 @@
 Package: autoScorecard
 Type: Package
 Title: Fully Automatic Generation of Scorecards
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(person(given="Tai-Sen", family = "Zheng", role = c("aut", "cre"),
                     email = "jc3802201@gmail.com") )
 Maintainer: Tai-Sen Zheng <jc3802201@gmail.com>
@@ -19,11 +19,13 @@ Description:
 License: AGPL-3
 Encoding: UTF-8
 Imports: infotheo, ROCR, rpart, discretization, stats, graphics,
-        corrplot
+        grDevices, corrplot, ggplot2
 RoxygenNote: 7.2.3
 Depends: R (>= 2.10)
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2023-06-01 19:57:44 UTC; admin
+Packaged: 2023-06-07 18:54:46 UTC; admin
 Author: Tai-Sen Zheng [aut, cre]
 Repository: CRAN
-Date/Publication: 2023-06-01 20:40:03 UTC
+Date/Publication: 2023-06-13 08:50:10 UTC

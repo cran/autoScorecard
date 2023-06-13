@@ -114,6 +114,47 @@ psi_cal<- function( df_train , df_test,feat,label , nbins=10){
   head<- data.frame( variable,class ,lower,upper,train_cnt,test_cnt,PSI )
 
 
+  ###
+  abc<- head
+  p1<-  abc[,c("class","train_cnt"  )]
+  names(p1)[2]<- "cnt"
+  p1$variable<-deparse(substitute(df_train) )
+
+  p1$rate<- round(  p1$cnt  /sum( p1$cnt  )  , 3) *100
+
+  p2<-  abc[,c("class","test_cnt"  )]
+  names(p2)[2]<- "cnt"
+  p2$variable<-deparse(substitute(df_test) )
+
+  p2$rate<- round(  p2$cnt  /sum( p2$cnt  )  , 3) *100
+
+
+  abc2<- rbind(    p1  ,   p2   )
+
+
+  plot1<-ggplot2::ggplot(abc2,  ggplot2::aes(class,abc2[,c("rate")],fill=variable))+
+
+    ggplot2::geom_bar(stat = "identity",color="black",position = ggplot2::position_dodge(),
+
+             width = 0.7,size=0.25) + ggplot2::scale_y_continuous(expand = c(0,0),limits = c(0,25)) +
+
+    ggplot2::theme_classic() +
+
+    ggplot2::theme(panel.background=   ggplot2::element_rect(fill="white",colour="black",size=0.25),
+
+          axis.line = ggplot2::element_line(colour="black",size=0.25),
+
+          axis.title= ggplot2::element_text(size=13,color="black"),
+
+          axis.text = ggplot2::element_text(size=8,color="black"),
+
+
+          legend.position= c(0.15,0.85)
+
+    )  +ggplot2::labs(x='Score',y='Proportion of score(%)',title= paste( 'PSI:', round(  sum( head[,c("PSI")]  ,na.rm = T)  , 4)     ,sep = " "))
+
+  print( plot1)
+
   return(   head )
 
 }

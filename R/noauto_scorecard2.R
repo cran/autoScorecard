@@ -46,7 +46,7 @@ noauto_scorecard2<- function( bins_card, fit,bins_woe,points0 = 600, odds0 = 1/1
       }else{
 
         score= score +  p*as.numeric(coe[i])*re2[,names(coe[i]  )]
-        print( names(coe[i]  ) )
+
 
       }
 

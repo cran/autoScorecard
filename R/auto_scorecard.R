@@ -64,13 +64,13 @@ auto_scorecard<-function( feature = accepts, key_var = "application_id", y_var =
   perf_both <- ROCR::performance(pred_both,"tpr","fpr")
 
 
-  graphics::plot(perf_both,col='green',main="ROC of Models")
+  #graphics::plot(perf_both,col='green',main="ROC of Models")
 
-  graphics::abline(0,1,lty=2,col='red')
+  #graphics::abline(0,1,lty=2,col='red')
 
-  lr_m_auc<-round(as.numeric( ROCR::performance(pred_both,'auc')@y.values),3)
-  lr_m_str<-paste("Mode_both-AUC:",lr_m_auc,sep="")
-  graphics::legend(0.5,0.55,c(lr_m_str),2:8)
+  #lr_m_auc<-round(as.numeric( ROCR::performance(pred_both,'auc')@y.values),3)
+  #lr_m_str<-paste("Mode_both-AUC:",lr_m_auc,sep="")
+  #graphics::legend(0.5,0.55,c(lr_m_str),2:8)
 
 
   coe = (lg_both$coefficients)
@@ -100,7 +100,9 @@ auto_scorecard<-function( feature = accepts, key_var = "application_id", y_var =
   Score['lg']     <-   list( lg )
   Score['lg_both']<-   list( lg_both  )
 
-  psi_1<-psi_cal( df_train =Score_2$data_score , df_test = Score$data_score,feat='Score',label='bad_ind' , nbins=10)
+  data_train <- Score_2$data_score
+  data_test <- Score$data_score
+  psi_1<-psi_cal( df_train = data_train , df_test = data_test,feat='Score',label='bad_ind' , nbins=10)
   Score['PSI']<-   list( psi_1  )
 
 

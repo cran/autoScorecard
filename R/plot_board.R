@@ -67,7 +67,7 @@ plot_board<- function( label  , pred  ){
   depth <- ROCR::performance(pred_Tr,measure='rpp')@y.values[[1]]
   graphics::plot(depth,ks,type='l',col='red',main='K-S',ylab='KS',xlab='depth')
   kslable<-paste("KS:",max(ks),sep="")
-  legend(0.3,0.2,c(kslable),2:8)
+  graphics::legend(0.3,0.2,c(kslable),2:8)
 
 
 }
